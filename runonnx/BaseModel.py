@@ -107,7 +107,7 @@ class BaseModel():
             raise ValueError("Input must be a file path or PIL Image")
         
         if dst_shape is None:
-            print(f"[INFO] [BaseModel] [_preprocess] dst_shape is None, using model input shape {self.input_shapes[self.input_names[0]]}")
+            if self.debug: print(f"[INFO] [BaseModel] [_preprocess] dst_shape is None, using model input shape {self.input_shapes[self.input_names[0]]}")
             dst_shape = (self.input_shapes[self.input_names[0]][2], self.input_shapes[self.input_names[0]][1])  # (W, H)
         img_ = img.copy()
         self.input_img = img.copy()  # 保存原始图像
@@ -327,7 +327,7 @@ class BaseModel():
             bboxs: 解码后的边界框列表，每个边界框格式为 [idx, class, conf, x1, y1, x2, y2]
         """
         threshold_logit = scipy.special.logit(threshold)
-        print("[DEBUG] [BaseModel] [_postprocess] threshold/logit:", threshold, threshold_logit)
+        if self.debug: print("[DEBUG] [BaseModel] [_postprocess] threshold/logit:", threshold, threshold_logit)
         bboxs = []
         anchors = [[],[],[]]
         for idx, output in enumerate(outputs):
